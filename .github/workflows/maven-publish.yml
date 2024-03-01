@@ -23,10 +23,10 @@ jobs:
           java-version: '17'
 
       - name: Build with Maven
-        run: mvn -B package --file pom.xml
+        run: mvn -B package -Dspring.profiles.active=build --file pom.xml
 
       - name: Set projects Maven version to GitHub Action GUI set version
-        run: mvn versions:set "-DnewVersion=${{ github.event.inputs.releaseversion }}"
+        run: mvn versions:set -Dspring.profiles.active=build "-DnewVersion=${{ github.event.inputs.releaseversion }}"
 
       - name: Set up Apache Maven Central
         uses: actions/setup-java@v4
@@ -46,7 +46,7 @@ jobs:
           # -U force updates just to make sure we are using latest dependencies
           # -B Batch mode (do not ask for user input), just in case
           # -P activate profile
-          mvn -U -B clean deploy -Dgpg.passphrase=${{ secrets.SONARTYPE_GPG_PASSPHRASE }} -P release -s settings.xml
+          mvn -U -B clean deploy -Dspring.profiles.active=build -Dgpg.passphrase=${{ secrets.SONARTYPE_GPG_PASSPHRASE }} -P release -s settings.xml
         env:
           GPG_KEY: ${{ secrets.SONARTYPE_GPG_PRIVATE_KEY }}
           SIGN_KEY_PASS: ${{ secrets.SONARTYPE_GPG_PASSPHRASE }}

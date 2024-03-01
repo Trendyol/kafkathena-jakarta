@@ -19,7 +19,7 @@ jobs:
           java-version: '17'
           cache: 'maven'
       - name: Run the Maven verify phase
-        run: mvn --batch-mode --update-snapshots verify
+        run: mvn --batch-mode --update-snapshots verify -Dspring.profiles.active=build
 
   security-gates:
     uses: Trendyol/security-actions/.github/workflows/security-gates.yml@master

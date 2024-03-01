@@ -12,9 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
+import org.springframework.context.annotation.Profile;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit.jupiter.EnabledIf;
 
 import java.util.concurrent.TimeUnit;
 
@@ -32,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
         topics = {TOPIC, ERROR_TOPIC})
 @Slf4j
 @ExtendWith(OutputCaptureExtension.class)
+@EnabledIf(value = "#{{'integration-tests'}.contains(environment.getActiveProfiles()[0])}")
 public class IgnoredExceptionTest {
     public static final String TOPIC = "json.consumer.ignored.exception.topic";
     public static final String ERROR_TOPIC = "kafkathena.common.error.topic";

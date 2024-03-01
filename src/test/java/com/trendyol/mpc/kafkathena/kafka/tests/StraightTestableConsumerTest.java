@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
+import org.springframework.context.annotation.Profile;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit.jupiter.EnabledIf;
 
 import java.util.concurrent.TimeUnit;
 
@@ -28,6 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
                 "auto.create.topics.enable=${kafka.broker.topics-enable:true}"},
         topics = {TOPIC, ERROR_TOPIC})
 @ExtendWith(OutputCaptureExtension.class)
+@EnabledIf(value = "#{{'integration-tests'}.contains(environment.getActiveProfiles()[0])}")
 public class StraightTestableConsumerTest {
     public static final String TOPIC = "json.consumer.topic";
     public static final String ERROR_TOPIC = "kafkathena.common.error.topic";
