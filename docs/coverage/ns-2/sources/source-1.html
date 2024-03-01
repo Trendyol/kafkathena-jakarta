@@ -1,0 +1,195 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > KSKafkaUtil</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.trendyol.mpc.kafkathena.util</a>
+</div>
+
+<h1>Coverage Summary for Class: KSKafkaUtil (com.trendyol.mpc.kafkathena.util)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">KSKafkaUtil</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/9)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">KSKafkaUtil$MockitoMock$0v3p1KDZ</td>
+  </tr>
+  <tr>
+    <td class="name">KSKafkaUtil$MockitoMock$0v3p1KDZ$auxiliary$9kwrJXhs</td>
+  </tr>
+  <tr>
+    <td class="name">KSKafkaUtil$MockitoMock$0v3p1KDZ$auxiliary$abljTcpb</td>
+  </tr>
+  <tr>
+    <td class="name">KSKafkaUtil$MockitoMock$0v3p1KDZ$auxiliary$fTgnrEp4</td>
+  </tr>
+  <tr>
+    <td class="name">KSKafkaUtil$MockitoMock$0v3p1KDZ$auxiliary$jHP0UrMM</td>
+  </tr>
+  <tr>
+    <td class="name">KSKafkaUtil$MockitoMock$0v3p1KDZ$auxiliary$NpdX1y2V</td>
+  </tr>
+  <tr>
+    <td class="name">KSKafkaUtil$MockitoMock$0v3p1KDZ$auxiliary$occuGead</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/9)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package com.trendyol.mpc.kafkathena.util;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import com.fasterxml.jackson.databind.DeserializationFeature;
+<i class="no-highlight">4</i>&nbsp;import com.fasterxml.jackson.databind.ObjectMapper;
+<i class="no-highlight">5</i>&nbsp;import com.trendyol.mpc.kafkathena.model.KSConsumer;
+<i class="no-highlight">6</i>&nbsp;import com.trendyol.mpc.kafkathena.model.KSConsumerFactoryProp;
+<i class="no-highlight">7</i>&nbsp;import com.trendyol.mpc.kafkathena.model.KSConsumerProducerProp;
+<i class="no-highlight">8</i>&nbsp;import com.trendyol.mpc.kafkathena.model.constant.KSHeader;
+<i class="no-highlight">9</i>&nbsp;import com.trendyol.mpc.kafkathena.util.extensions.FailoverHandler;
+<i class="no-highlight">10</i>&nbsp;import com.trendyol.mpc.kafkathena.util.extensions.KSJsonSupport;
+<i class="no-highlight">11</i>&nbsp;import com.trendyol.mpc.kafkathena.util.extensions.KSMapSupport;
+<i class="no-highlight">12</i>&nbsp;import com.trendyol.mpc.kafkathena.util.filterstrategy.KSRecordFilterStrategy;
+<i class="no-highlight">13</i>&nbsp;import lombok.RequiredArgsConstructor;
+<i class="no-highlight">14</i>&nbsp;import lombok.SneakyThrows;
+<i class="no-highlight">15</i>&nbsp;import lombok.extern.log4j.Log4j2;
+<i class="no-highlight">16</i>&nbsp;import org.apache.kafka.clients.consumer.ConsumerConfig;
+<i class="no-highlight">17</i>&nbsp;import org.apache.kafka.clients.consumer.ConsumerRecord;
+<i class="no-highlight">18</i>&nbsp;import org.apache.kafka.clients.producer.ProducerRecord;
+<i class="no-highlight">19</i>&nbsp;import org.apache.kafka.common.serialization.StringDeserializer;
+<i class="no-highlight">20</i>&nbsp;import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+<i class="no-highlight">21</i>&nbsp;import org.springframework.context.ApplicationContext;
+<i class="no-highlight">22</i>&nbsp;import org.springframework.context.ConfigurableApplicationContext;
+<i class="no-highlight">23</i>&nbsp;import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+<i class="no-highlight">24</i>&nbsp;import org.springframework.kafka.core.ConsumerFactory;
+<i class="no-highlight">25</i>&nbsp;import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+<i class="no-highlight">26</i>&nbsp;import org.springframework.kafka.core.KafkaOperations;
+<i class="no-highlight">27</i>&nbsp;import org.springframework.kafka.listener.DefaultErrorHandler;
+<i class="no-highlight">28</i>&nbsp;import org.springframework.kafka.support.ExponentialBackOffWithMaxRetries;
+<i class="no-highlight">29</i>&nbsp;import org.springframework.kafka.support.mapping.DefaultJackson2JavaTypeMapper;
+<i class="no-highlight">30</i>&nbsp;import org.springframework.kafka.support.mapping.Jackson2JavaTypeMapper;
+<i class="no-highlight">31</i>&nbsp;import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
+<i class="no-highlight">32</i>&nbsp;import org.springframework.kafka.support.serializer.JsonDeserializer;
+<i class="no-highlight">33</i>&nbsp;import org.springframework.retry.annotation.EnableRetry;
+<i class="no-highlight">34</i>&nbsp;import org.springframework.stereotype.Component;
+<i class="no-highlight">35</i>&nbsp;import org.springframework.util.backoff.FixedBackOff;
+<i class="no-highlight">36</i>&nbsp;
+<i class="no-highlight">37</i>&nbsp;import java.nio.charset.StandardCharsets;
+<i class="no-highlight">38</i>&nbsp;import java.time.Duration;
+<i class="no-highlight">39</i>&nbsp;import java.util.Map;
+<i class="no-highlight">40</i>&nbsp;import java.util.Optional;
+<i class="no-highlight">41</i>&nbsp;import java.util.Properties;
+<i class="no-highlight">42</i>&nbsp;
+<i class="no-highlight">43</i>&nbsp;@Component
+<i class="no-highlight">44</i>&nbsp;@EnableRetry
+<b class="fc"><i class="no-highlight">45</i>&nbsp;@RequiredArgsConstructor</b>
+<b class="fc"><i class="no-highlight">46</i>&nbsp;@Log4j2</b>
+<i class="no-highlight">47</i>&nbsp;public class KSKafkaUtil implements KSMapSupport, KSJsonSupport {
+<i class="no-highlight">48</i>&nbsp;    private final KsKafkaHandler ksKafkaHandler;
+<i class="no-highlight">49</i>&nbsp;    private final ApplicationContext applicationContext;
+<i class="no-highlight">50</i>&nbsp;    private final KSConsumerProducerProp consumerProps;
+<i class="no-highlight">51</i>&nbsp;
+<b class="fc"><i class="no-highlight">52</i>&nbsp;    @SneakyThrows</b>
+<i class="no-highlight">53</i>&nbsp;    public void createSpringManagedFactory(KSConsumer consumer) {
+<b class="fc"><i class="no-highlight">54</i>&nbsp;        Class&lt;?&gt; clz = Class.forName(consumer.getDataClass());</b>
+<b class="fc"><i class="no-highlight">55</i>&nbsp;        KSConsumerFactoryProp ksConsumerFactoryProp = mergeFactoryProps(consumerProps.getSharedFactoryProps(), consumer.getFactoryProps());</b>
+<b class="fc"><i class="no-highlight">56</i>&nbsp;        ConsumerFactory&lt;String, ?&gt; consumerFactory = ksKafkaHandler.createSpringConsumerFactory(consumer, clz, ksConsumerFactoryProp);</b>
+<b class="fc"><i class="no-highlight">57</i>&nbsp;        ConcurrentKafkaListenerContainerFactory&lt;String, ?&gt; kafkaSingleListenerContainerFactory = ksKafkaHandler.createSpringKafkaListenerContainerFactory(consumerFactory, consumer, ksConsumerFactoryProp);</b>
+<b class="fc"><i class="no-highlight">58</i>&nbsp;        ConfigurableListableBeanFactory beanFactory = ((ConfigurableApplicationContext) applicationContext).getBeanFactory();</b>
+<b class="fc"><i class="no-highlight">59</i>&nbsp;        beanFactory.registerSingleton(consumer.getFactoryBeanName(), kafkaSingleListenerContainerFactory);</b>
+<i class="no-highlight">60</i>&nbsp;    }
+<i class="no-highlight">61</i>&nbsp;
+<i class="no-highlight">62</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-06-28 12:17</div>
+</div>
+</body>
+</html>

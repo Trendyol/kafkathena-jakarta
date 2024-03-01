@@ -1,0 +1,159 @@
+kafkathena:
+  shared-factory-props:
+    producer:
+      interceptor: "com.trendyol.mpc.kafkathena.commons.interceptor.KSProducerInterceptor"
+    consumer:
+      interceptor: "com.trendyol.mpc.kafkathena.commons.interceptor.KSConsumerInterceptor"
+      autoStartup: true
+      missingTopicAlertEnable: false
+      concurrency: 1
+      syncCommitTimeoutSecond: 5
+      syncCommit: true
+      batch: false
+      ackMode: RECORD
+    clusters:
+      "[confluent]":
+        servers: localhost:9092
+      "[stretch]":
+        servers: 10.85.243.39:30762
+
+  producers:
+    default:
+      cluster: confluent
+
+
+  consumers:
+    "[json-consumer]":
+      cluster: confluent
+      factory-bean-name: jsonConsumerFactory
+      data-class: com.trendyol.mpc.kafkathena.kafka.application.model.Person
+      error-producer-name: default
+      topic: json.consumer.topic
+      filter-header:
+        error-producer-filter-key: json-consumer-error
+      failover:
+        error-topic: kafkathena.common.error.topic
+        ignored-exception-classes:
+          - com.trendyol.mpc.kafkathena.kafka.application.model.IgnoredException
+      fixed-retry:
+        retry-count: 1
+        backoff-interval-millis: 1000 #wait time for retry
+      props:
+        "[group.id]": kafkathena.group.1
+        "[value.deserializer]": org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+        "[spring.deserializer.value.delegate.class]": org.springframework.kafka.support.serializer.JsonDeserializer
+        "[key.deserializer]": org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+        "[spring.deserializer.key.delegate.class]": org.apache.kafka.common.serialization.StringDeserializer
+        "[max.poll.records]": 100
+        "[max.poll.interval.ms]": 300000
+        "[session.timeout.ms]": 300000
+        "[heartbeat.interval.ms]": 3000
+        "[enable.auto.commit]": true
+        "[auto.offset.reset]": earliest
+        "[fetch.max.bytes]": 52428800
+        "[fetch.max.wait.ms]": 500
+    "[json-consumer-retry]":
+      cluster: confluent
+      factory-bean-name: jsonConsumerRetryFactory
+      data-class: com.trendyol.mpc.kafkathena.kafka.application.model.Person
+      error-producer-name: default
+      topic: json.consumer.retriable.topic
+      filter-header:
+        error-producer-filter-key: json-consumer-error
+      fixed-retry:
+        retry-count: 2
+        backoff-interval-millis: 1000 #wait time for retry
+      props:
+        "[group.id]": kafkathena.retry.group.1
+        "[value.deserializer]": org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+        "[spring.deserializer.value.delegate.class]": org.springframework.kafka.support.serializer.JsonDeserializer
+        "[key.deserializer]": org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+        "[spring.deserializer.key.delegate.class]": org.apache.kafka.common.serialization.StringDeserializer
+        "[max.poll.records]": 100
+        "[max.poll.interval.ms]": 300000
+        "[session.timeout.ms]": 300000
+        "[heartbeat.interval.ms]": 3000
+        "[enable.auto.commit]": true
+        "[auto.offset.reset]": earliest
+        "[fetch.max.bytes]": 52428800
+        "[fetch.max.wait.ms]": 500
+    "[json-consumer-ignored-exception]":
+      cluster: confluent
+      factory-bean-name: jsonConsumerIgnoredExceptionFactory
+      data-class: com.trendyol.mpc.kafkathena.kafka.application.model.Person
+      error-producer-name: default
+      topic: json.consumer.ignored.exception.topic
+      failover:
+        error-topic: kafkathena.common.error.topic
+        ignored-exception-classes:
+          - com.trendyol.mpc.kafkathena.kafka.application.model.IgnoredException
+      fixed-retry:
+        retry-count: 1
+        backoff-interval-millis: 1000 #wait time for retry
+      props:
+        "[group.id]": kafkathena.group.3
+        "[value.deserializer]": org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+        "[spring.deserializer.value.delegate.class]": org.springframework.kafka.support.serializer.JsonDeserializer
+        "[key.deserializer]": org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+        "[spring.deserializer.key.delegate.class]": org.apache.kafka.common.serialization.StringDeserializer
+        "[max.poll.records]": 100
+        "[max.poll.interval.ms]": 300000
+        "[session.timeout.ms]": 300000
+        "[heartbeat.interval.ms]": 3000
+        "[enable.auto.commit]": true
+        "[auto.offset.reset]": earliest
+        "[fetch.max.bytes]": 52428800
+        "[fetch.max.wait.ms]": 500
+    "[json-consumer-failover-error-topic]":
+      cluster: confluent
+      factory-bean-name: jsonConsumerFailoverErrorTopicFactory
+      data-class: com.trendyol.mpc.kafkathena.kafka.application.model.Person
+      error-producer-name: default
+      topic: json.consumer.failover.error.topic
+      failover:
+        error-topic: json.consumer.failover.error.topic.error
+      filter-header:
+        error-producer-filter-key: json-consumer-failover-error-topic
+      fixed-retry:
+        retry-count: 1
+        backoff-interval-millis: 100 #wait time for retry
+      props:
+        "[group.id]": kafkathena.group.5
+        "[value.deserializer]": org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+        "[spring.deserializer.value.delegate.class]": org.springframework.kafka.support.serializer.JsonDeserializer
+        "[key.deserializer]": org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+        "[spring.deserializer.key.delegate.class]": org.apache.kafka.common.serialization.StringDeserializer
+        "[max.poll.records]": 100
+        "[max.poll.interval.ms]": 300000
+        "[session.timeout.ms]": 300000
+        "[heartbeat.interval.ms]": 3000
+        "[enable.auto.commit]": true
+        "[auto.offset.reset]": earliest
+        "[fetch.max.bytes]": 52428800
+        "[fetch.max.wait.ms]": 500
+    "[json-consumer-failover-error-topic-error]":
+      cluster: confluent
+      factory-bean-name: jsonConsumerFailoverErrorTopicErrorFactory
+      data-class: com.trendyol.mpc.kafkathena.kafka.application.model.Person
+      error-producer-name: default
+      topic: json.consumer.failover.error.topic.error
+      filter-header:
+        consumer-filter-key: json-consumer-failover-error-topic
+      props:
+        "[group.id]": kafkathena.group.6
+        "[value.deserializer]": org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+        "[spring.deserializer.value.delegate.class]": org.springframework.kafka.support.serializer.JsonDeserializer
+        "[key.deserializer]": org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+        "[spring.deserializer.key.delegate.class]": org.apache.kafka.common.serialization.StringDeserializer
+        "[max.poll.records]": 100
+        "[max.poll.interval.ms]": 300000
+        "[session.timeout.ms]": 300000
+        "[heartbeat.interval.ms]": 3000
+        "[enable.auto.commit]": true
+        "[auto.offset.reset]": earliest
+        "[fetch.max.bytes]": 52428800
+        "[fetch.max.wait.ms]": 500
+
+
+  integration-topics:
+    "topic-1": topic1

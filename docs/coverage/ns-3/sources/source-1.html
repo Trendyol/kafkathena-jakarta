@@ -1,0 +1,144 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > KSJsonSupport</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.trendyol.mpc.kafkathena.util.extensions</a>
+</div>
+
+<h1>Coverage Summary for Class: KSJsonSupport (com.trendyol.mpc.kafkathena.util.extensions)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">KSJsonSupport</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    33.3%
+  </span>
+  <span class="absValue">
+    (1/3)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">KSJsonSupport$MockitoMock$tcWMadKG</td>
+  </tr>
+  <tr>
+    <td class="name">KSJsonSupport$MockitoMock$tcWMadKG$auxiliary$ab43SZi8</td>
+  </tr>
+  <tr>
+    <td class="name">KSJsonSupport$MockitoMock$tcWMadKG$auxiliary$EdnDUydI</td>
+  </tr>
+  <tr>
+    <td class="name">KSJsonSupport$MockitoMock$tcWMadKG$auxiliary$Vg5VCKv0</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    33.3%
+  </span>
+  <span class="absValue">
+    (1/3)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package com.trendyol.mpc.kafkathena.util.extensions;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import com.fasterxml.jackson.core.JsonProcessingException;
+<i class="no-highlight">4</i>&nbsp;import com.fasterxml.jackson.databind.JsonNode;
+<i class="no-highlight">5</i>&nbsp;import com.fasterxml.jackson.databind.ObjectMapper;
+<i class="no-highlight">6</i>&nbsp;import com.fasterxml.jackson.databind.ObjectWriter;
+<i class="no-highlight">7</i>&nbsp;import com.fasterxml.jackson.databind.type.TypeFactory;
+<i class="no-highlight">8</i>&nbsp;
+<i class="no-highlight">9</i>&nbsp;import java.util.List;
+<i class="no-highlight">10</i>&nbsp;
+<i class="no-highlight">11</i>&nbsp;public interface KSJsonSupport {
+<i class="no-highlight">12</i>&nbsp;
+<i class="no-highlight">13</i>&nbsp;    default &lt;T&gt; String asJson(ObjectMapper objectMapper, T in) {
+<i class="no-highlight">14</i>&nbsp;        try {
+<b class="fc"><i class="no-highlight">15</i>&nbsp;            return objectMapper.writeValueAsString(in);</b>
+<b class="nc"><i class="no-highlight">16</i>&nbsp;        } catch (JsonProcessingException j) {</b>
+<b class="nc"><i class="no-highlight">17</i>&nbsp;            throw new RuntimeException(j);</b>
+<i class="no-highlight">18</i>&nbsp;        }
+<i class="no-highlight">19</i>&nbsp;    }
+<i class="no-highlight">20</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-06-28 12:17</div>
+</div>
+</body>
+</html>

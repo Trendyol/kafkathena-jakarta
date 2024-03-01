@@ -1,0 +1,137 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > KSConsumerConfiguration</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.trendyol.mpc.kafkathena.kafka</a>
+</div>
+
+<h1>Coverage Summary for Class: KSConsumerConfiguration (com.trendyol.mpc.kafkathena.kafka)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">KSConsumerConfiguration</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package com.trendyol.mpc.kafkathena.kafka;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import com.trendyol.mpc.kafkathena.model.KSConsumerProducerProp;
+<i class="no-highlight">4</i>&nbsp;import com.trendyol.mpc.kafkathena.model.constant.KSConstants;
+<i class="no-highlight">5</i>&nbsp;import com.trendyol.mpc.kafkathena.util.KSKafkaUtil;
+<i class="no-highlight">6</i>&nbsp;import com.trendyol.mpc.kafkathena.util.extensions.KSMapSupport;
+<i class="no-highlight">7</i>&nbsp;import lombok.RequiredArgsConstructor;
+<i class="no-highlight">8</i>&nbsp;import lombok.extern.log4j.Log4j2;
+<i class="no-highlight">9</i>&nbsp;import lombok.extern.slf4j.Slf4j;
+<i class="no-highlight">10</i>&nbsp;import org.apache.commons.collections4.MapUtils;
+<i class="no-highlight">11</i>&nbsp;import org.springframework.context.annotation.Configuration;
+<i class="no-highlight">12</i>&nbsp;import org.springframework.kafka.annotation.EnableKafka;
+<i class="no-highlight">13</i>&nbsp;
+<i class="no-highlight">14</i>&nbsp;import javax.annotation.PostConstruct;
+<i class="no-highlight">15</i>&nbsp;import java.util.Optional;
+<i class="no-highlight">16</i>&nbsp;
+<i class="no-highlight">17</i>&nbsp;@Configuration(value = KSConstants.KSCONSUMER_CONFIGURATION_BEAN_NAME)
+<i class="no-highlight">18</i>&nbsp;@EnableKafka
+<b class="fc"><i class="no-highlight">19</i>&nbsp;@RequiredArgsConstructor</b>
+<b class="fc"><i class="no-highlight">20</i>&nbsp;@Log4j2</b>
+<i class="no-highlight">21</i>&nbsp;public class KSConsumerConfiguration implements KSMapSupport {
+<i class="no-highlight">22</i>&nbsp;    private final KSConsumerProducerProp consumerProps;
+<i class="no-highlight">23</i>&nbsp;    private final KSKafkaUtil kafkaUtil;
+<i class="no-highlight">24</i>&nbsp;
+<i class="no-highlight">25</i>&nbsp;    @PostConstruct
+<i class="no-highlight">26</i>&nbsp;    public void init() {
+<b class="fc"><i class="no-highlight">27</i>&nbsp;        Optional.ofNullable(consumerProps.getConsumers())</b>
+<b class="fc"><i class="no-highlight">28</i>&nbsp;                .filter(MapUtils::isNotEmpty)</b>
+<b class="fc"><i class="no-highlight">29</i>&nbsp;                .ifPresent(consumers -&gt; consumers.forEach((key, value) -&gt; kafkaUtil.createSpringManagedFactory(value)));</b>
+<b class="fc"><i class="no-highlight">30</i>&nbsp;        log.info(&quot;Kafkathena consumer bindings initialized {}&quot;, consumerProps);</b>
+<i class="no-highlight">31</i>&nbsp;    }
+<i class="no-highlight">32</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-06-28 12:17</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,179 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > KSMapSupport</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.trendyol.mpc.kafkathena.util.extensions</a>
+</div>
+
+<h1>Coverage Summary for Class: KSMapSupport (com.trendyol.mpc.kafkathena.util.extensions)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">KSMapSupport</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87.5%
+  </span>
+  <span class="absValue">
+    (21/24)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">KSMapSupport$MockitoMock$IIhtwFzk</td>
+  </tr>
+  <tr>
+    <td class="name">KSMapSupport$MockitoMock$IIhtwFzk$auxiliary$hNFJTUkA</td>
+  </tr>
+  <tr>
+    <td class="name">KSMapSupport$MockitoMock$IIhtwFzk$auxiliary$JRWzuLNc</td>
+  </tr>
+  <tr>
+    <td class="name">KSMapSupport$MockitoMock$IIhtwFzk$auxiliary$VNrV2Ren</td>
+  </tr>
+  <tr>
+    <td class="name">KSMapSupport$MockitoMock$IIhtwFzk$auxiliary$zuISaY51</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87.5%
+  </span>
+  <span class="absValue">
+    (21/24)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package com.trendyol.mpc.kafkathena.util.extensions;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import com.trendyol.mpc.kafkathena.model.KSConsumerFactoryProp;
+<i class="no-highlight">4</i>&nbsp;import org.apache.commons.collections4.MapUtils;
+<i class="no-highlight">5</i>&nbsp;import org.apache.commons.lang3.StringUtils;
+<i class="no-highlight">6</i>&nbsp;
+<i class="no-highlight">7</i>&nbsp;import java.util.Arrays;
+<i class="no-highlight">8</i>&nbsp;import java.util.HashMap;
+<i class="no-highlight">9</i>&nbsp;import java.util.Map;
+<i class="no-highlight">10</i>&nbsp;import java.util.Optional;
+<i class="no-highlight">11</i>&nbsp;import java.util.stream.Collectors;
+<i class="no-highlight">12</i>&nbsp;
+<i class="no-highlight">13</i>&nbsp;public interface KSMapSupport {
+<i class="no-highlight">14</i>&nbsp;    default Map&lt;String, Object&gt; mergeKafkaProps(Map&lt;String, Object&gt; from, Map&lt;String, Object&gt; to) {
+<b class="fc"><i class="no-highlight">15</i>&nbsp;        if (from == null) {</b>
+<b class="nc"><i class="no-highlight">16</i>&nbsp;            return to;</b>
+<i class="no-highlight">17</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">18</i>&nbsp;        Map&lt;Object, String&gt; invertedFromMap = MapUtils.invertMap(from);</b>
+<b class="fc"><i class="no-highlight">19</i>&nbsp;        return from.entrySet()</b>
+<b class="fc"><i class="no-highlight">20</i>&nbsp;                .stream()</b>
+<b class="fc"><i class="no-highlight">21</i>&nbsp;                .collect(Collectors.toMap(</b>
+<i class="no-highlight">22</i>&nbsp;                        Map.Entry::getKey,
+<i class="no-highlight">23</i>&nbsp;                        Map.Entry::getValue,
+<i class="no-highlight">24</i>&nbsp;                        (v1, v2) -&gt; {
+<b class="fc"><i class="no-highlight">25</i>&nbsp;                            if (invertedFromMap.get(v2).equalsIgnoreCase(&quot;spring.json.trusted.packages&quot;)) {</b>
+<b class="nc"><i class="no-highlight">26</i>&nbsp;                                return StringUtils.join(Arrays.asList(StringUtils.deleteWhitespace(String.valueOf(v2)).trim(),</b>
+<b class="nc"><i class="no-highlight">27</i>&nbsp;                                        StringUtils.deleteWhitespace(String.valueOf(v1)).trim()), &quot;,&quot;);</b>
+<i class="no-highlight">28</i>&nbsp;                            } else {
+<b class="fc"><i class="no-highlight">29</i>&nbsp;                                return v2;</b>
+<i class="no-highlight">30</i>&nbsp;                            }
+<i class="no-highlight">31</i>&nbsp;                        },
+<b class="fc"><i class="no-highlight">32</i>&nbsp;                        () -&gt; new HashMap&lt;&gt;(to)));</b>
+<i class="no-highlight">33</i>&nbsp;    }
+<i class="no-highlight">34</i>&nbsp;
+<i class="no-highlight">35</i>&nbsp;    default KSConsumerFactoryProp mergeFactoryProps(KSConsumerFactoryProp defaultProps, KSConsumerFactoryProp targetProps) {
+<b class="fc"><i class="no-highlight">36</i>&nbsp;        KSConsumerFactoryProp ksDefaultProps = Optional.ofNullable(defaultProps).orElse(new KSConsumerFactoryProp());</b>
+<b class="fc"><i class="no-highlight">37</i>&nbsp;        return Optional.ofNullable(targetProps)</b>
+<b class="fc"><i class="no-highlight">38</i>&nbsp;                .map(tp -&gt; {</b>
+<b class="fc"><i class="no-highlight">39</i>&nbsp;                            KSConsumerFactoryProp ksConsumerFactoryProp = new KSConsumerFactoryProp();</b>
+<b class="fc"><i class="no-highlight">40</i>&nbsp;                            ksConsumerFactoryProp.setSyncCommit(Optional.ofNullable(tp.getSyncCommit()).orElse(ksDefaultProps.getSyncCommit()));</b>
+<b class="fc"><i class="no-highlight">41</i>&nbsp;                            ksConsumerFactoryProp.setSyncCommitTimeoutSecond(Optional.ofNullable(tp.getSyncCommitTimeoutSecond()).orElse(ksDefaultProps.getSyncCommitTimeoutSecond()));</b>
+<b class="fc"><i class="no-highlight">42</i>&nbsp;                            ksConsumerFactoryProp.setAutoStartup(Optional.ofNullable(tp.getAutoStartup()).orElse(ksDefaultProps.getAutoStartup()));</b>
+<b class="fc"><i class="no-highlight">43</i>&nbsp;                            ksConsumerFactoryProp.setConcurrency(Optional.ofNullable(tp.getConcurrency()).orElse(ksDefaultProps.getConcurrency()));</b>
+<b class="fc"><i class="no-highlight">44</i>&nbsp;                            ksConsumerFactoryProp.setMissingTopicAlertEnable(Optional.ofNullable(tp.getMissingTopicAlertEnable()).orElse(ksDefaultProps.getMissingTopicAlertEnable()));</b>
+<b class="fc"><i class="no-highlight">45</i>&nbsp;                            ksConsumerFactoryProp.setAckMode(Optional.ofNullable(tp.getAckMode()).orElse(ksDefaultProps.getAckMode()));</b>
+<b class="fc"><i class="no-highlight">46</i>&nbsp;                            ksConsumerFactoryProp.setInterceptorClassPath(Optional.ofNullable(tp.getInterceptorClassPath()).orElse(ksDefaultProps.getInterceptorClassPath()));</b>
+<b class="fc"><i class="no-highlight">47</i>&nbsp;                            return ksConsumerFactoryProp;</b>
+<i class="no-highlight">48</i>&nbsp;                        }
+<i class="no-highlight">49</i>&nbsp;                )
+<b class="fc"><i class="no-highlight">50</i>&nbsp;                .orElse(ksDefaultProps);</b>
+<i class="no-highlight">51</i>&nbsp;    }
+<i class="no-highlight">52</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-06-28 12:17</div>
+</div>
+</body>
+</html>
