@@ -1,33 +1,33 @@
 kafkathena:
   shared-factory-props:
-    producer:
-      interceptor: "com.trendyol.mpc.kafkathena.commons.interceptor.KSProducerInterceptor"
-    consumer:
-      interceptor: "com.trendyol.mpc.kafkathena.commons.interceptor.KSConsumerInterceptor"
-      autoStartup: true
-      missingTopicAlertEnable: false
-      concurrency: 1
-      syncCommitTimeoutSecond: 5
-      syncCommit: true
-      batch: false
-      ackMode: RECORD
+    autoStartup: true
+    missingTopicAlertEnable: false
+    concurrency: 1
+    syncCommitTimeoutSecond: 5
+    syncCommit: true
+    ackMode: RECORD
     clusters:
-      "[confluent]":
-        servers: localhost:9092
-      "[stretch]":
-        servers: 10.85.243.39:30762
+      "[default]":
+        servers: ${default.cluster:localhost:9092}
 
   producers:
     default:
-      cluster: confluent
+      cluster: default
+      props:
+        "[batch.size]": 16384
+        "[linger.ms]": 0
+        "[buffer.memory]": 33554432
+        "[key.serializer]": org.apache.kafka.common.serialization.StringSerializer
+        "[value.serializer]": org.springframework.kafka.support.serializer.JsonSerializer
+        "[acks]": "1"
+        "[request.timeout.ms]": 30000
 
 
   consumers:
     "[json-consumer]":
-      cluster: confluent
       factory-bean-name: jsonConsumerFactory
-      data-class: com.trendyol.mpc.kafkathena.kafka.application.model.Person
       error-producer-name: default
+      data-class: com.trendyol.mpc.kafkathena.kafka.application.model.Person
       topic: json.consumer.topic
       filter-header:
         error-producer-filter-key: json-consumer-error
@@ -38,6 +38,7 @@ kafkathena:
       fixed-retry:
         retry-count: 1
         backoff-interval-millis: 1000 #wait time for retry
+      cluster: default
       props:
         "[group.id]": kafkathena.group.1
         "[value.deserializer]": org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
@@ -53,7 +54,6 @@ kafkathena:
         "[fetch.max.bytes]": 52428800
         "[fetch.max.wait.ms]": 500
     "[json-consumer-retry]":
-      cluster: confluent
       factory-bean-name: jsonConsumerRetryFactory
       data-class: com.trendyol.mpc.kafkathena.kafka.application.model.Person
       error-producer-name: default
@@ -63,6 +63,7 @@ kafkathena:
       fixed-retry:
         retry-count: 2
         backoff-interval-millis: 1000 #wait time for retry
+      cluster: default
       props:
         "[group.id]": kafkathena.retry.group.1
         "[value.deserializer]": org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
@@ -78,10 +79,9 @@ kafkathena:
         "[fetch.max.bytes]": 52428800
         "[fetch.max.wait.ms]": 500
     "[json-consumer-ignored-exception]":
-      cluster: confluent
       factory-bean-name: jsonConsumerIgnoredExceptionFactory
-      data-class: com.trendyol.mpc.kafkathena.kafka.application.model.Person
       error-producer-name: default
+      data-class: com.trendyol.mpc.kafkathena.kafka.application.model.Person
       topic: json.consumer.ignored.exception.topic
       failover:
         error-topic: kafkathena.common.error.topic
@@ -90,6 +90,7 @@ kafkathena:
       fixed-retry:
         retry-count: 1
         backoff-interval-millis: 1000 #wait time for retry
+      cluster: default
       props:
         "[group.id]": kafkathena.group.3
         "[value.deserializer]": org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
@@ -105,7 +106,6 @@ kafkathena:
         "[fetch.max.bytes]": 52428800
         "[fetch.max.wait.ms]": 500
     "[json-consumer-failover-error-topic]":
-      cluster: confluent
       factory-bean-name: jsonConsumerFailoverErrorTopicFactory
       data-class: com.trendyol.mpc.kafkathena.kafka.application.model.Person
       error-producer-name: default
@@ -117,6 +117,7 @@ kafkathena:
       fixed-retry:
         retry-count: 1
         backoff-interval-millis: 100 #wait time for retry
+      cluster: default
       props:
         "[group.id]": kafkathena.group.5
         "[value.deserializer]": org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
@@ -132,13 +133,13 @@ kafkathena:
         "[fetch.max.bytes]": 52428800
         "[fetch.max.wait.ms]": 500
     "[json-consumer-failover-error-topic-error]":
-      cluster: confluent
       factory-bean-name: jsonConsumerFailoverErrorTopicErrorFactory
       data-class: com.trendyol.mpc.kafkathena.kafka.application.model.Person
       error-producer-name: default
       topic: json.consumer.failover.error.topic.error
       filter-header:
         consumer-filter-key: json-consumer-failover-error-topic
+      cluster: default
       props:
         "[group.id]": kafkathena.group.6
         "[value.deserializer]": org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
@@ -153,7 +154,6 @@ kafkathena:
         "[auto.offset.reset]": earliest
         "[fetch.max.bytes]": 52428800
         "[fetch.max.wait.ms]": 500
-
 
   integration-topics:
     "topic-1": topic1
