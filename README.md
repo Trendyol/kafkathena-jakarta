@@ -75,31 +75,10 @@ This is an example of how to list things you need to use the software and how to
 1. Copy and paste this inside your pom.xml dependencies block.
 ```xml
 <dependency>
-  <groupId>com.trendyol.mpc</groupId>
-  <artifactId>kafkathena-commons</artifactId>
+  <groupId>com.trendyol</groupId>
+  <artifactId>kafkathena-jakarta</artifactId>
   <version>RELEASE</version>
 </dependency>
-```
-2. Registry setup. If you haven't already done so, you will need to add the below to your pom.xml file.
-```xml
-<repositories>
-  <repository>
-    <id>gitlab-maven</id>
-    <url>https://gitlab.trendyol.com/api/v4/projects/4093/packages/maven</url>
-  </repository>
-</repositories>
-
-<distributionManagement>
-  <repository>
-    <id>gitlab-maven</id>
-    <url>https://gitlab.trendyol.com/api/v4/projects/4093/packages/maven</url>
-  </repository>
-
-  <snapshotRepository>
-    <id>gitlab-maven</id>
-    <url>https://gitlab.trendyol.com/api/v4/projects/4093/packages/maven</url>
-  </snapshotRepository>
-</distributionManagement>
 ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
