@@ -93,17 +93,25 @@ This is an example of how to list things you need to use the software and how to
 ```
 kafkathena:
   shared-factory-props:
-    autoStartup: true
-    missingTopicAlertEnable: false
-    concurrency: 1
-    syncCommitTimeoutSecond: 5
-    syncCommit: true
-    ackMode: RECORD
-    interceptorClassPath: com.trendyol.kafkathena.demo.interceptor.KafkaConsumerInterceptor
+    producer:
+      interceptor: "com.trendyol.mpc.kafkathena.commons.interceptor.KSProducerInterceptor"
+    consumer:
+      interceptor: "com.trendyol.mpc.kafkathena.commons.interceptor.KSConsumerInterceptor"
+      autoStartup: true
+      missingTopicAlertEnable: false
+      concurrency: 1
+      syncCommitTimeoutSecond: 5
+      syncCommit: true
+      batch: false
+      ackMode: RECORD
+    clusters:
+      "[confluent]":
+        servers: localhost:9092
+    
   producers:
     default:
+      cluster: confluent
       props:
-        "[bootstrap.servers]": ${KAFKA_BOOTSTRAP_SERVERS:localhost:29092}
         "[batch.size]": 16384
         "[linger.ms]": 0
         "[buffer.memory]": 33554432
@@ -118,6 +126,7 @@ kafkathena:
       factory-bean-name: consumerOneKafkaListenerContainerFactory
       data-class: com.trendyol.kafkathena.demo.model.ConsumerOneMessage
       error-producer-name: default
+      cluster: confluent
       filter-header:
         error-producer-filter-key: one-filter
         consumer-filter-key: one-filter
@@ -141,7 +150,6 @@ kafkathena:
         ack-mode: : RECORD
         interceptor-class-path: : com.trendyol.kafkathena.demo.interceptor.KafkaConsumerInterceptor
       props:
-        "[bootstrap.servers]": ${KAFKA_BOOTSTRAP_SERVERS:localhost:29092}
         "[group.id]": kafkathena.topicOneGroup
         "[value.deserializer]": org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
         "[spring.deserializer.value.delegate.class]": org.springframework.kafka.support.serializer.JsonDeserializer
